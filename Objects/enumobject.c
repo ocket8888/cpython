@@ -1,6 +1,6 @@
 /* enumerate object */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include "clinic/enumobject.c.h"
 

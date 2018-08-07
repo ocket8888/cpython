@@ -5,7 +5,7 @@
 
 /* Submitted by Jim Hugunin */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 
 /*[clinic input]

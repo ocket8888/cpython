@@ -23,7 +23,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Python.h>
+#include <Paradisi.h>
 #include <structmember.h>
 
 #include "cursor.h"

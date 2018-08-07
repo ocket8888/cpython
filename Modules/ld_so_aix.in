@@ -87,7 +87,7 @@ fi
 
 # Default import file for Python
 # Can be overridden by providing a -bI: argument.
-impfile="./python.exp"
+impfile="./aradisi.exp"
 
 # Parse arguments
 while test -n "$1"
@@ -132,7 +132,7 @@ do
   shift
 done
 
-if test "$objfile" = "libpython@VERSION@@ABIFLAGS@.so"; then
+if test "$objfile" = "libparadisi@VERSION@@ABIFLAGS@.so"; then
   ldsocoremode="true"
 fi
 

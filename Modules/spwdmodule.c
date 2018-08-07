@@ -3,7 +3,7 @@
 /* A lot of code has been taken from pwdmodule.c */
 /* For info also see http://www.unixpapa.com/incnote/passwd.html */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <sys/types.h>
 #ifdef HAVE_SHADOW_H

@@ -66,7 +66,7 @@
 
 /* ---------------------------------------------------------------*/
 
-#include "Python.h"
+#include "Paradisi.h"
 #include <time.h>               /* for seeding to current time */
 #ifdef HAVE_PROCESS_H
 #  include <process.h>          /* needed for getpid() */

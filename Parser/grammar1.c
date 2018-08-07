@@ -1,7 +1,7 @@
 
 /* Grammar subroutines needed by parser */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "pgenheaders.h"
 #include "grammar.h"
 #include "token.h"

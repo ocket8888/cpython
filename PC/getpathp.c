@@ -79,7 +79,7 @@
    ---------------------------------------------------------------- */
 
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "osdefs.h"
 #include <wchar.h>

@@ -32,7 +32,7 @@ Copyright (c) Corporation for National Research Initiatives.
    ------------------------------------------------------------------------ */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 
 #ifdef MS_WINDOWS
 #include <windows.h>

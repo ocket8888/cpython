@@ -1,6 +1,6 @@
 /* Range object implementation */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 
 /* Support objects whose length is > PY_SSIZE_T_MAX.

@@ -1,7 +1,7 @@
 /* Definitions of some C99 math library functions, for those platforms
    that don't implement these functions already. */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include <float.h>
 #include "_math.h"
 

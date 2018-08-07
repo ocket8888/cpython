@@ -49,7 +49,7 @@ Revision history:
 
 /* syslog module */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "osdefs.h"
 
 #include <syslog.h>

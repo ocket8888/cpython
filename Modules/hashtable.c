@@ -44,7 +44,7 @@
    ----------------------------------
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "hashtable.h"
 
 #define HASHTABLE_MIN_SIZE 16

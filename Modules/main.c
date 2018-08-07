@@ -1,6 +1,6 @@
 /* Python interpreter main program */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "osdefs.h"
 #include "internal/import.h"
 #include "internal/pygetopt.h"

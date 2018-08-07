@@ -1,7 +1,7 @@
 /* cryptmodule.c - by Steve Majewski
  */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <sys/types.h>
 

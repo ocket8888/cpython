@@ -3,7 +3,7 @@
 
 #define PY_SSIZE_T_CLEAN
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>

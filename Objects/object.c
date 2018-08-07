@@ -1,7 +1,7 @@
 
 /* Generic object operations; and implementation of None */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "internal/context.h"
 #include "frameobject.h"

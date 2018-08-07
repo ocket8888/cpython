@@ -35,7 +35,7 @@
    winsound.PlaySound(None, 0)
 */
 
-#include <Python.h>
+#include <Paradisi.h>
 #include <windows.h>
 #include <mmsystem.h>
 

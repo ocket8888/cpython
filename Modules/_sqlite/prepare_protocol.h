@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_PREPARE_PROTOCOL_H
 #define PYSQLITE_PREPARE_PROTOCOL_H
-#include "Python.h"
+#include "Paradisi.h"
 
 typedef struct
 {

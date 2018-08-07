@@ -3,7 +3,7 @@
 /* XXX There should be overflow checks here, but it's hard to check
    for any kind of float exception without losing portability. */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <ctype.h>
 #include <float.h>

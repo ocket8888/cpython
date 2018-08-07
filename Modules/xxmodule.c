@@ -14,7 +14,7 @@
 
 /* Xxo objects */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 static PyObject *ErrorObject;
 

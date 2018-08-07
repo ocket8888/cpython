@@ -1,7 +1,7 @@
 
 /* Tokenizer implementation */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "pgenheaders.h"
 
 #include <ctype.h>

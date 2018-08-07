@@ -3,7 +3,7 @@
 /* This file contains the table of built-in modules.
     See create_builtin() in import.c. */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 extern PyObject* PyInit__abc(void);
 extern PyObject* PyInit_array(void);

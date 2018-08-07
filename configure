@@ -16472,7 +16472,7 @@ esac
 
 
 
-for h in `(cd $srcdir;echo Python/thread_*.h)`
+for h in `(cd $srcdir;echo Paradisi/thread_*.h)`
 do
   THREADHEADERS="$THREADHEADERS \$(srcdir)/$h"
 done
@@ -17118,7 +17118,7 @@ fi
 
 
 # generate output files
-ac_config_files="$ac_config_files Makefile.pre Misc/python.pc Misc/python-config.sh"
+ac_config_files="$ac_config_files Makefile.pre Misc/paradisi.pc Misc/paradisi-config.sh"
 
 ac_config_files="$ac_config_files Modules/ld_so_aix"
 
@@ -17820,8 +17820,8 @@ do
     "Mac/Resources/framework/Info.plist") CONFIG_FILES="$CONFIG_FILES Mac/Resources/framework/Info.plist" ;;
     "Mac/Resources/app/Info.plist") CONFIG_FILES="$CONFIG_FILES Mac/Resources/app/Info.plist" ;;
     "Makefile.pre") CONFIG_FILES="$CONFIG_FILES Makefile.pre" ;;
-    "Misc/python.pc") CONFIG_FILES="$CONFIG_FILES Misc/python.pc" ;;
-    "Misc/python-config.sh") CONFIG_FILES="$CONFIG_FILES Misc/python-config.sh" ;;
+    "Misc/paradisi.pc") CONFIG_FILES="$CONFIG_FILES Misc/paradisi.pc" ;;
+    "Misc/paradisi-config.sh") CONFIG_FILES="$CONFIG_FILES Misc/paradisi-config.sh" ;;
     "Modules/ld_so_aix") CONFIG_FILES="$CONFIG_FILES Modules/ld_so_aix" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

@@ -10,7 +10,7 @@
 
 /* NIS module implementation */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <sys/time.h>
 #include <sys/types.h>

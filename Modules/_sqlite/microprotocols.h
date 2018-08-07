@@ -26,7 +26,7 @@
 #ifndef PSYCOPG_MICROPROTOCOLS_H
 #define PSYCOPG_MICROPROTOCOLS_H 1
 
-#include <Python.h>
+#include <Paradisi.h>
 
 /** the names of the three mandatory methods **/
 

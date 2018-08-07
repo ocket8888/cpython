@@ -1,6 +1,6 @@
 #define PY_SSIZE_T_CLEAN
 
-#include "Python.h"
+#include "Paradisi.h"
 #ifdef HAVE_UUID_UUID_H
 #include <uuid/uuid.h>
 #endif

@@ -7,7 +7,7 @@
 
 #define PY_SSIZE_T_CLEAN
 
-#include "Python.h"
+#include "Paradisi.h"
 #include <float.h>
 #include "structmember.h"
 #include "datetime.h"

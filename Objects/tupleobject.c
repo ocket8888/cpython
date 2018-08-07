@@ -1,7 +1,7 @@
 
 /* Tuple object implementation */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "accu.h"
 

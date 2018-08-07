@@ -2,7 +2,7 @@
 /* Thread module */
 /* Interface to Sjoerd's portable C thread library */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "structmember.h" /* offsetof */
 #include "pythread.h"

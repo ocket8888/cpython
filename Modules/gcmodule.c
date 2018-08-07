@@ -23,7 +23,7 @@
 
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/context.h"
 #include "internal/mem.h"
 #include "internal/pystate.h"

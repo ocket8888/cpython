@@ -4,7 +4,7 @@
 /* Doc strings: Mitch Chapman */
 
 
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

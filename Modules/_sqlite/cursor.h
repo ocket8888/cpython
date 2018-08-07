@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_CURSOR_H
 #define PYSQLITE_CURSOR_H
-#include "Python.h"
+#include "Paradisi.h"
 
 #include "statement.h"
 #include "connection.h"

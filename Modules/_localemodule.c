@@ -10,7 +10,7 @@ This software comes with no warranty. Use at your own risk.
 ******************************************************************/
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 
 #include <stdio.h>
 #include <locale.h>

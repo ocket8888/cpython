@@ -7,7 +7,7 @@
 /* XXX check overflow and DWORD <-> Py_ssize_t conversions
    Check itemsize */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 
 #define WINDOWS_LEAN_AND_MEAN

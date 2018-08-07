@@ -9,7 +9,7 @@
    - a malloc'ed string ending in \n normally
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #ifdef MS_WINDOWS
 #define WIN32_LEAN_AND_MEAN

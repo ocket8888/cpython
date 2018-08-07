@@ -2,7 +2,7 @@
 
 /* XXX The functional organization of this file is terrible */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "longintrepr.h"
 
 #include <float.h>

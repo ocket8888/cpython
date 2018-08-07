@@ -16,7 +16,7 @@
 
 /* MD5 objects */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "hashlib.h"
 #include "pystrhex.h"
 

@@ -1,7 +1,7 @@
-#include "Python.h"
+#include "Paradisi.h"
 
 #include "code.h"
-#include "Python-ast.h"
+#include "Paradisi-ast.h"
 #include "symtable.h"
 
 #include "clinic/symtablemodule.c.h"

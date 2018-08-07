@@ -8,7 +8,7 @@
 #define _GNU_SOURCE
 #endif
 
-#include "Python.h"
+#include "Paradisi.h"
 #include <structmember.h>
 
 #ifdef HAVE_SYS_DEVPOLL_H

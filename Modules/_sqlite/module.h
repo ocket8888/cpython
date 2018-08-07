@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_MODULE_H
 #define PYSQLITE_MODULE_H
-#include "Python.h"
+#include "Paradisi.h"
 
 #define PYSQLITE_VERSION "2.6.0"
 

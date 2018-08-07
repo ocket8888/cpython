@@ -3,7 +3,7 @@
  * Licensed to PSF under a contributor agreement.
  */
 
-#include <Python.h>
+#include <Paradisi.h>
 #include <fci.h>
 #include <fcntl.h>
 #include <windows.h>

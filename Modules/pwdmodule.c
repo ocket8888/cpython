@@ -1,7 +1,7 @@
 
 /* UNIX password file access module */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "posixmodule.h"
 
 #include <pwd.h>

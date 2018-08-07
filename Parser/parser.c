@@ -5,7 +5,7 @@
 
 /* XXX To do: error recovery */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "pgenheaders.h"
 #include "token.h"
 #include "grammar.h"

@@ -6,7 +6,7 @@ annotated by François Pinard, and converted to C by Raymond Hettinger.
 
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 static int
 siftdown(PyListObject *heap, Py_ssize_t startpos, Py_ssize_t pos)

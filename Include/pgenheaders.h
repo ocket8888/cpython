@@ -7,7 +7,7 @@ extern "C" {
 
 /* Include files and extern declarations used by most of the parser. */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 PyAPI_FUNC(void) PySys_WriteStdout(const char *format, ...)
                         Py_GCC_ATTRIBUTE((format(printf, 1, 2)));

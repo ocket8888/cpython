@@ -4,7 +4,7 @@
    The item type is restricted to simple C types like int or float */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 
 #ifdef STDC_HEADERS

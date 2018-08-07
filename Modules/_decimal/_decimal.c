@@ -26,7 +26,7 @@
  */
 
 
-#include <Python.h>
+#include <Paradisi.h>
 #include "longintrepr.h"
 #include "pythread.h"
 #include "structmember.h"

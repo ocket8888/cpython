@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_CACHE_H
 #define PYSQLITE_CACHE_H
-#include "Python.h"
+#include "Paradisi.h"
 
 /* The LRU cache is implemented as a combination of a doubly-linked with a
  * dictionary. The list items are of type 'Node' and the dictionary has the

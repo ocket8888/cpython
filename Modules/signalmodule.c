@@ -3,7 +3,7 @@
 
 /* XXX Signals should be recorded per thread, now we have thread state. */
 
-#include "Python.h"
+#include "Paradisi.h"
 #ifndef MS_WINDOWS
 #include "posixmodule.h"
 #endif

@@ -31,7 +31,7 @@
    the found and not-found case.
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "structmember.h"
 

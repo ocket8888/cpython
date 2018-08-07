@@ -16,7 +16,7 @@
 #pragma weak_import posix_spawnattr_setflags
 #pragma weak_import posix_spawn
 
-#include <Python.h>
+#include <Paradisi.h>
 #include <unistd.h>
 #ifdef HAVE_SPAWN_H
 #include <spawn.h>
@@ -27,7 +27,7 @@
 #include <err.h>
 #include <dlfcn.h>
 #include <stdlib.h>
-#include <Python.h>
+#include <Paradisi.h>
 #include <mach-o/dyld.h>
 
 

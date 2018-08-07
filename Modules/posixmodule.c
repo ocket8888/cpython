@@ -24,7 +24,7 @@
 
 #define PY_SSIZE_T_CLEAN
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "pythread.h"
 #include "structmember.h"
 #ifndef MS_WINDOWS

@@ -1,6 +1,6 @@
 /* termiosmodule.c -- POSIX terminal I/O module implementation.  */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 /* Apparently, on SGI, termios.h won't define CTRL if _XOPEN_SOURCE
    is defined, so we define it here. */

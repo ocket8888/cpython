@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_UTIL_H
 #define PYSQLITE_UTIL_H
-#include "Python.h"
+#include "Paradisi.h"
 #include "pythread.h"
 #include "sqlite3.h"
 #include "connection.h"

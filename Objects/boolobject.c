@@ -1,6 +1,6 @@
 /* Boolean type, a subtype of int */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "longintrepr.h"
 
 /* We define bool_repr to return "False" or "True" */

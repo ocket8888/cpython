@@ -30,8 +30,8 @@
  *  Lib/symbol.h and Include/token.h.
  */
 
-#include "Python.h"                     /* general Python API             */
-#include "Python-ast.h"                 /* mod_ty */
+#include "Paradisi.h"                     /* general Python API             */
+#include "Paradisi-ast.h"                 /* mod_ty */
 #include "graminit.h"                   /* symbols defined in the grammar */
 #include "node.h"                       /* internal parser structure      */
 #include "errcode.h"                    /* error codes for PyNode_*()     */

@@ -1,7 +1,7 @@
 /* Author: Daniel Stutzbach */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>

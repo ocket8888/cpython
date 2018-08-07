@@ -1,7 +1,7 @@
 /* File object implementation (what's left of it -- see io.py) */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 
 #ifdef HAVE_GETC_UNLOCKED
 #define GETC(f) getc_unlocked(f)

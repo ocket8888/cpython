@@ -1,5 +1,5 @@
 /* Authors: Gregory P. Smith & Jeffrey Yasskin */
-#include "Python.h"
+#include "Paradisi.h"
 #if defined(HAVE_PIPE2) && !defined(_GNU_SOURCE)
 # define _GNU_SOURCE
 #endif

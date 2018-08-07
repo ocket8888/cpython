@@ -23,7 +23,7 @@
 
 #ifndef PYSQLITE_ROW_H
 #define PYSQLITE_ROW_H
-#include "Python.h"
+#include "Paradisi.h"
 
 typedef struct _Row
 {

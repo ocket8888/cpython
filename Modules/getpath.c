@@ -1,6 +1,6 @@
 /* Return the initial module search path. */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/pystate.h"
 #include "osdefs.h"
 

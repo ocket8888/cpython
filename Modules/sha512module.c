@@ -16,7 +16,7 @@
 
 /* SHA objects */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 #include "hashlib.h"
 #include "pystrhex.h"

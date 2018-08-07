@@ -1,7 +1,7 @@
 /* PyByteArray (bytearray) implementation */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/mem.h"
 #include "internal/pystate.h"
 #include "structmember.h"

@@ -8,7 +8,7 @@ forgotten) from the programmer.
 
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "windows.h"
 
 #ifdef Py_ENABLE_SHARED

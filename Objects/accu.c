@@ -1,6 +1,6 @@
 /* Accumulator struct implementation */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "accu.h"
 
 static PyObject *

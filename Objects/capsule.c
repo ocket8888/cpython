@@ -1,6 +1,6 @@
 /* Wrap void * pointers to be passed between C modules */
 
-#include "Python.h"
+#include "Paradisi.h"
 
 /* Internal structure of PyCapsule */
 typedef struct {

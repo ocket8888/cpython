@@ -2,7 +2,7 @@
  * Helper method for urllib to fetch the proxy configuration settings
  * using the SystemConfiguration framework.
  */
-#include <Python.h>
+#include <Paradisi.h>
 #include <SystemConfiguration/SystemConfiguration.h>
 
 static int32_t

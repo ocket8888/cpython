@@ -4,7 +4,7 @@ Converted to C by Dmitry Vasiliev (dima at hlabs.spb.ru).
 */
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 
 _Py_IDENTIFIER(insert);
 

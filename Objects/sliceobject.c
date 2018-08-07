@@ -13,7 +13,7 @@ the Py_NoneStruct in that there is no way to create other objects of
 this type and there is exactly one in existence.
 */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "internal/mem.h"
 #include "internal/pystate.h"
 #include "structmember.h"

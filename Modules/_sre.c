@@ -40,7 +40,7 @@ static const char copyright[] =
 
 #define PY_SSIZE_T_CLEAN
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h" /* offsetof */
 
 #include "sre.h"

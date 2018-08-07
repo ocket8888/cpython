@@ -13,7 +13,7 @@
 #include <Strsafe.h>
 #include "external\include\Setup.Configuration.h"
 
-#include <Python.h>
+#include <Paradisi.h>
 
 static PyObject *error_from_hr(HRESULT hr)
 {

@@ -10,7 +10,7 @@
 
   See the source code for LLVMFuzzerTestOneInput for details. */
 
-#include <Python.h>
+#include <Paradisi.h>
 #include <stdlib.h>
 #include <inttypes.h>
 

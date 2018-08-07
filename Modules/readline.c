@@ -5,7 +5,7 @@
  */
 
 /* Standard definitions */
-#include "Python.h"
+#include "Paradisi.h"
 #include <stddef.h>
 #include <signal.h>
 #include <errno.h>

@@ -1,4 +1,4 @@
-# Top-level Makefile for Python
+# Top-level Makefile for Paradisi
 #
 # As distributed, this file is called Makefile.pre.in; it is processed
 # into the real Makefile by running the script ./configure, which
@@ -11,7 +11,7 @@
 #	make test
 #	make install
 #
-# If you have a previous version of Python installed that you don't
+# If you have a previous version of Paradisi installed that you don't
 # want to overwrite, you can use "make altinstall" instead of "make
 # install".  Refer to the "Installing" section in the README file for
 # additional details.
@@ -59,7 +59,7 @@ GNULD=		@GNULD@
 # Shell used by make (some versions default to the login shell, which is bad)
 SHELL=		/bin/sh
 
-# Use this to make a link between python$(VERSION) and python in $(BINDIR)
+# Use this to make a link between paradisi$(VERSION) and paradisi in $(BINDIR)
 LN=		@LN@
 
 # Portable install script (configure doesn't always guess right)
@@ -83,7 +83,7 @@ BASECPPFLAGS=	@BASECPPFLAGS@
 CONFIGURE_CFLAGS=	@CFLAGS@
 # CFLAGS_NODIST is used for building the interpreter and stdlib C extensions.
 # Use it when a compiler flag should _not_ be part of the distutils CFLAGS
-# once Python is installed (Issue #21121).
+# once Paradisi is installed (Issue #21121).
 CONFIGURE_CFLAGS_NODIST=@CFLAGS_NODIST@
 CONFIGURE_CPPFLAGS=	@CPPFLAGS@
 CONFIGURE_LDFLAGS=	@LDFLAGS@
@@ -138,10 +138,10 @@ SCRIPTDIR=	$(prefix)/lib
 ABIFLAGS=	@ABIFLAGS@
 
 # Detailed destination directories
-BINLIBDEST=	$(LIBDIR)/python$(VERSION)
-LIBDEST=	$(SCRIPTDIR)/python$(VERSION)
-INCLUDEPY=	$(INCLUDEDIR)/python$(LDVERSION)
-CONFINCLUDEPY=	$(CONFINCLUDEDIR)/python$(LDVERSION)
+BINLIBDEST=	$(LIBDIR)/paradisi$(VERSION)
+LIBDEST=	$(SCRIPTDIR)/paradisi$(VERSION)
+INCLUDEPY=	$(INCLUDEDIR)/paradisi$(LDVERSION)
+CONFINCLUDEPY=	$(CONFINCLUDEDIR)/paradisi$(LDVERSION)
 
 # Symbols used for using shared libraries
 SHLIB_SUFFIX=	@SHLIB_SUFFIX@
@@ -155,7 +155,7 @@ DESTSHARED=	$(BINLIBDEST)/lib-dynload
 EXE=		@EXEEXT@
 BUILDEXE=	@BUILDEXEEXT@
 
-# Short name and location for Mac OS X Python framework
+# Short name and location for Mac OS X Paradisi framework
 UNIVERSALSDK=@UNIVERSALSDK@
 PYTHONFRAMEWORK=	@PYTHONFRAMEWORK@
 PYTHONFRAMEWORKDIR=	@PYTHONFRAMEWORKDIR@
@@ -176,7 +176,7 @@ LIPO_32BIT_FLAGS=@LIPO_32BIT_FLAGS@
 # Options to enable prebinding (for fast startup prior to Mac OS X 10.3)
 OTHER_LIBTOOL_OPT=@OTHER_LIBTOOL_OPT@
 
-# Environment to run shared python without installed libraries
+# Environment to run shared paradisi without installed libraries
 RUNSHARED=       @RUNSHARED@
 
 # ensurepip options
@@ -228,11 +228,11 @@ SHLIBS=		@SHLIBS@
 DLINCLDIR=	@DLINCLDIR@
 DYNLOADFILE=	@DYNLOADFILE@
 MACHDEP_OBJS=	@MACHDEP_OBJS@
-LIBOBJDIR=	Python/
+LIBOBJDIR=	Paradisi/
 LIBOBJS=	@LIBOBJS@
 
-PYTHON=		python$(EXE)
-BUILDPYTHON=	python$(BUILDEXE)
+PYTHON=		paradisi$(EXE)
+BUILDPYTHON=	paradisi$(BUILDEXE)
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
 UPDATE_FILE=@PYTHON_FOR_REGEN@ $(srcdir)/Tools/scripts/update_file.py
@@ -253,7 +253,7 @@ PROFILE_TASK=-m test.regrtest --pgo
 # report files for gcov / lcov coverage report
 COVERAGE_INFO=	$(abs_builddir)/coverage.info
 COVERAGE_REPORT=$(abs_builddir)/lcov-report
-COVERAGE_REPORT_OPTIONS=--no-branch-coverage --title "CPython lcov report"
+COVERAGE_REPORT_OPTIONS=--no-branch-coverage --title "CParadisi lcov report"
 
 
 # === Definitions added by makesetup ===
@@ -302,9 +302,9 @@ PARSER_OBJS=	$(POBJS) Parser/myreadline.o Parser/parsetok.o Parser/tokenizer.o
 
 PGOBJS=		\
 		Objects/obmalloc.o \
-		Python/dynamic_annotations.o \
-		Python/mysnprintf.o \
-		Python/pyctype.o \
+		Paradisi/dynamic_annotations.o \
+		Paradisi/mysnprintf.o \
+		Paradisi/pyctype.o \
 		Parser/tokenizer_pgen.o \
 		Parser/printgrammar.o \
 		Parser/parsetok_pgen.o \
@@ -318,62 +318,62 @@ PARSER_HEADERS= \
 PGENOBJS=	$(POBJS) $(PGOBJS)
 
 ##########################################################################
-# Python
+# Paradisi
 
 PYTHON_OBJS=	\
-		Python/_warnings.o \
-		Python/Python-ast.o \
-		Python/asdl.o \
-		Python/ast.o \
-		Python/ast_opt.o \
-		Python/ast_unparse.o \
-		Python/bltinmodule.o \
-		Python/ceval.o \
-		Python/compile.o \
-		Python/codecs.o \
-		Python/dynamic_annotations.o \
-		Python/errors.o \
-		Python/frozenmain.o \
-		Python/future.o \
-		Python/getargs.o \
-		Python/getcompiler.o \
-		Python/getcopyright.o \
-		Python/getplatform.o \
-		Python/getversion.o \
-		Python/graminit.o \
-		Python/import.o \
-		Python/importdl.o \
-		Python/marshal.o \
-		Python/modsupport.o \
-		Python/mysnprintf.o \
-		Python/mystrtoul.o \
-		Python/pathconfig.o \
-		Python/peephole.o \
-		Python/pyarena.o \
-		Python/pyctype.o \
-		Python/pyfpe.o \
-		Python/pyhash.o \
-		Python/pylifecycle.o \
-		Python/pymath.o \
-		Python/pystate.o \
-		Python/context.o \
-		Python/hamt.o \
-		Python/pythonrun.o \
-		Python/pytime.o \
-		Python/bootstrap_hash.o \
-		Python/structmember.o \
-		Python/symtable.o \
-		Python/sysmodule.o \
-		Python/thread.o \
-		Python/traceback.o \
-		Python/getopt.o \
-		Python/pystrcmp.o \
-		Python/pystrtod.o \
-		Python/pystrhex.o \
-		Python/dtoa.o \
-		Python/formatter_unicode.o \
-		Python/fileutils.o \
-		Python/$(DYNLOADFILE) \
+		Paradisi/_warnings.o \
+		Paradisi/Paradisi-ast.o \
+		Paradisi/asdl.o \
+		Paradisi/ast.o \
+		Paradisi/ast_opt.o \
+		Paradisi/ast_unparse.o \
+		Paradisi/bltinmodule.o \
+		Paradisi/ceval.o \
+		Paradisi/compile.o \
+		Paradisi/codecs.o \
+		Paradisi/dynamic_annotations.o \
+		Paradisi/errors.o \
+		Paradisi/frozenmain.o \
+		Paradisi/future.o \
+		Paradisi/getargs.o \
+		Paradisi/getcompiler.o \
+		Paradisi/getcopyright.o \
+		Paradisi/getplatform.o \
+		Paradisi/getversion.o \
+		Paradisi/graminit.o \
+		Paradisi/import.o \
+		Paradisi/importdl.o \
+		Paradisi/marshal.o \
+		Paradisi/modsupport.o \
+		Paradisi/mysnprintf.o \
+		Paradisi/mystrtoul.o \
+		Paradisi/pathconfig.o \
+		Paradisi/peephole.o \
+		Paradisi/pyarena.o \
+		Paradisi/pyctype.o \
+		Paradisi/pyfpe.o \
+		Paradisi/pyhash.o \
+		Paradisi/pylifecycle.o \
+		Paradisi/pymath.o \
+		Paradisi/pystate.o \
+		Paradisi/context.o \
+		Paradisi/hamt.o \
+		Paradisi/paradisirun.o \
+		Paradisi/pytime.o \
+		Paradisi/bootstrap_hash.o \
+		Paradisi/structmember.o \
+		Paradisi/symtable.o \
+		Paradisi/sysmodule.o \
+		Paradisi/thread.o \
+		Paradisi/traceback.o \
+		Paradisi/getopt.o \
+		Paradisi/pystrcmp.o \
+		Paradisi/pystrtod.o \
+		Paradisi/pystrhex.o \
+		Paradisi/dtoa.o \
+		Paradisi/formatter_unicode.o \
+		Paradisi/fileutils.o \
+		Paradisi/$(DYNLOADFILE) \
 		$(LIBOBJS) \
 		$(MACHDEP_OBJS) \
 		$(DTRACE_OBJS)
@@ -424,7 +424,7 @@ OBJECT_OBJS=	\
 		Objects/weakrefobject.o
 
 ##########################################################################
-# objects that get linked into the Python library
+# objects that get linked into the Paradisi library
 LIBRARY_OBJS_OMIT_FROZEN=	\
 		Modules/getbuildinfo.o \
 		$(PARSER_OBJS) \
@@ -435,7 +435,7 @@ LIBRARY_OBJS_OMIT_FROZEN=	\
 
 LIBRARY_OBJS=	\
 		$(LIBRARY_OBJS_OMIT_FROZEN) \
-		Python/frozen.o
+		Paradisi/frozen.o
 
 ##########################################################################
 # DTrace
@@ -443,7 +443,7 @@ LIBRARY_OBJS=	\
 # On some systems, object files that reference DTrace probes need to be modified
 # in-place by dtrace(1).
 DTRACE_DEPS = \
-	Python/ceval.o
+	Paradisi/ceval.o
 # XXX: should gcmodule, etc. be here, too?
 
 #########################################################################
@@ -452,13 +452,13 @@ DTRACE_DEPS = \
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
 build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks \
-		Programs/_testembed python-config
+		Programs/_testembed paradisi-config
 
 # Check that the source is clean when building out of source.
 check-clean-src:
-	@if test -n "$(VPATH)" -a -f "$(srcdir)/Programs/python.o"; then \
+	@if test -n "$(VPATH)" -a -f "$(srcdir)/Programs/paradisi.o"; then \
 		echo "Error: The source directory ($(srcdir)) is not clean" ; \
-		echo "Building Python out of the source tree (in $(abs_builddir)) requires a clean source tree ($(abs_srcdir))" ; \
+		echo "Building Paradisi out of the source tree (in $(abs_builddir)) requires a clean source tree ($(abs_srcdir))" ; \
 		echo "Try to run: make -C \"$(srcdir)\" clean" ; \
 		exit 1; \
 	fi
@@ -505,7 +505,7 @@ run_profile_task:
 build_all_merge_profile:
 	$(LLVM_PROF_MERGER)
 
-# Compile Python binary with profile guided optimization.
+# Compile Paradisi binary with profile guided optimization.
 # To force re-running of the profile task, remove the profile-run-stamp file.
 profile-opt: profile-run-stamp
 	@echo "Rebuilding with profile guided optimizations:"
@@ -539,8 +539,8 @@ coverage-lcov:
 	    '*/Include/*' \
 	    '*/Modules/xx*.c' \
 	    '*/Parser/listnode.c' \
-	    '*/Python/pyfpe.c' \
-	    '*/Python/pystrcmp.c' \
+	    '*/Paradisi/pyfpe.c' \
+	    '*/Paradisi/pystrcmp.c' \
 	    '/usr/include/*' \
 	    '/usr/local/include/*' \
 	    '/usr/lib/gcc/*' \
@@ -566,8 +566,8 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 	$(PYTHON_FOR_REGEN) $(srcdir)/Tools/clinic/clinic.py --make --srcdir $(srcdir)
 
 # Build the interpreter
-$(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
-	$(LINKCC) $(PY_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
+$(BUILDPYTHON):	Programs/paradisi.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
+	$(LINKCC) $(PY_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/paradisi.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
 
 platform: $(BUILDPYTHON) pybuilddir.txt
 	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform
@@ -620,7 +620,7 @@ $(LIBRARY): $(LIBRARY_OBJS)
 	-rm -f $@
 	$(AR) $(ARFLAGS) $@ $(LIBRARY_OBJS)
 
-libpython$(LDVERSION).so: $(LIBRARY_OBJS)
+libparadisi$(LDVERSION).so: $(LIBRARY_OBJS)
 	if test $(INSTSONAME) != $(LDLIBRARY); then \
 		$(BLDSHARED) -Wl,-h$(INSTSONAME) -o $(INSTSONAME) $(LIBRARY_OBJS) $(MODLIBS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
 		$(LN) -f $(INSTSONAME) $@; \
@@ -628,24 +628,24 @@ libpython$(LDVERSION).so: $(LIBRARY_OBJS)
 		$(BLDSHARED) -o $@ $(LIBRARY_OBJS) $(MODLIBS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
 	fi
 
-libpython3.so:	libpython$(LDVERSION).so
+libparadisi.so:	libparadisi$(LDVERSION).so
 	$(BLDSHARED) $(NO_AS_NEEDED) -o $@ -Wl,-h$@ $^
 
-libpython$(LDVERSION).dylib: $(LIBRARY_OBJS)
-	 $(CC) -dynamiclib -Wl,-single_module $(PY_LDFLAGS) -undefined dynamic_lookup -Wl,-install_name,$(prefix)/lib/libpython$(LDVERSION).dylib -Wl,-compatibility_version,$(VERSION) -Wl,-current_version,$(VERSION) -o $@ $(LIBRARY_OBJS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
+libparadisi$(LDVERSION).dylib: $(LIBRARY_OBJS)
+	 $(CC) -dynamiclib -Wl,-single_module $(PY_LDFLAGS) -undefined dynamic_lookup -Wl,-install_name,$(prefix)/lib/libparadisi$(LDVERSION).dylib -Wl,-compatibility_version,$(VERSION) -Wl,-current_version,$(VERSION) -o $@ $(LIBRARY_OBJS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
 
 
-libpython$(VERSION).sl: $(LIBRARY_OBJS)
+libparadisi$(VERSION).sl: $(LIBRARY_OBJS)
 	$(LDSHARED) -o $@ $(LIBRARY_OBJS) $(MODLIBS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST)
 
-# Copy up the gdb python hooks into a position where they can be automatically
+# Copy up the gdb paradisi hooks into a position where they can be automatically
 # loaded by gdb during Lib/test/test_gdb.py
 #
 # Distributors are likely to want to install this somewhere else e.g. relative
 # to the stripped DWARF data for the shared library.
 gdbhooks: $(BUILDPYTHON)-gdb.py
 
-SRC_GDB_HOOKS=$(srcdir)/Tools/gdb/libpython.py
+SRC_GDB_HOOKS=$(srcdir)/Tools/gdb/libparadisi.py
 $(BUILDPYTHON)-gdb.py: $(SRC_GDB_HOOKS)
 	$(INSTALL_DATA) $(SRC_GDB_HOOKS) $(BUILDPYTHON)-gdb.py
 
@@ -671,9 +671,9 @@ $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK): \
 	$(LN) -fsn Versions/Current/$(PYTHONFRAMEWORK) $(PYTHONFRAMEWORKDIR)/$(PYTHONFRAMEWORK)
 	$(LN) -fsn Versions/Current/Resources $(PYTHONFRAMEWORKDIR)/Resources
 
-# This rule builds the Cygwin Python DLL and import library if configured
+# This rule builds the Cygwin Paradisi DLL and import library if configured
 # for a shared core library; otherwise, this rule is a noop.
-$(DLLLIBRARY) libpython$(LDVERSION).dll.a: $(LIBRARY_OBJS)
+$(DLLLIBRARY) libparadisi$(LDVERSION).dll.a: $(LIBRARY_OBJS)
 	if test -n "$(DLLLIBRARY)"; then \
 		$(LDSHARED) -Wl,--out-implib=$@ -o $(DLLLIBRARY) $^ \
 			$(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST); \
@@ -720,18 +720,18 @@ Programs/_freeze_importlib: Programs/_freeze_importlib.o $(LIBRARY_OBJS_OMIT_FRO
 
 .PHONY: regen-importlib
 regen-importlib: Programs/_freeze_importlib
-	# Regenerate Python/importlib_external.h
+	# Regenerate Paradisi/importlib_external.h
 	# from Lib/importlib/_bootstrap_external.py using _freeze_importlib
 	./Programs/_freeze_importlib \
 	    $(srcdir)/Lib/importlib/_bootstrap_external.py \
-	    $(srcdir)/Python/importlib_external.h.new
-	$(UPDATE_FILE) $(srcdir)/Python/importlib_external.h $(srcdir)/Python/importlib_external.h.new
-	# Regenerate Python/importlib.h from Lib/importlib/_bootstrap.py
+	    $(srcdir)/Paradisi/importlib_external.h.new
+	$(UPDATE_FILE) $(srcdir)/Paradisi/importlib_external.h $(srcdir)/Paradisi/importlib_external.h.new
+	# Regenerate Paradisi/importlib.h from Lib/importlib/_bootstrap.py
 	# using _freeze_importlib
 	./Programs/_freeze_importlib \
 	    $(srcdir)/Lib/importlib/_bootstrap.py \
-	    $(srcdir)/Python/importlib.h.new
-	$(UPDATE_FILE) $(srcdir)/Python/importlib.h $(srcdir)/Python/importlib.h.new
+	    $(srcdir)/Paradisi/importlib.h.new
+	$(UPDATE_FILE) $(srcdir)/Paradisi/importlib.h $(srcdir)/Paradisi/importlib.h.new
 
 
 ############################################################################
@@ -763,8 +763,8 @@ Modules/getpath.o: $(srcdir)/Modules/getpath.c Makefile
 		-DVPATH='"$(VPATH)"' \
 		-o $@ $(srcdir)/Modules/getpath.c
 
-Programs/python.o: $(srcdir)/Programs/python.c
-	$(MAINCC) -c $(PY_CORE_CFLAGS) -o $@ $(srcdir)/Programs/python.c
+Programs/paradisi.o: $(srcdir)/Programs/paradisi.c
+	$(MAINCC) -c $(PY_CORE_CFLAGS) -o $@ $(srcdir)/Programs/paradisi.c
 
 Programs/_testembed.o: $(srcdir)/Programs/_testembed.c
 	$(MAINCC) -c $(PY_CORE_CFLAGS) -o $@ $(srcdir)/Programs/_testembed.c
@@ -779,21 +779,21 @@ Modules/pwdmodule.o: $(srcdir)/Modules/pwdmodule.c $(srcdir)/Modules/posixmodule
 
 Modules/signalmodule.o: $(srcdir)/Modules/signalmodule.c $(srcdir)/Modules/posixmodule.h
 
-Python/dynload_shlib.o: $(srcdir)/Python/dynload_shlib.c Makefile
+Paradisi/dynload_shlib.o: $(srcdir)/Paradisi/dynload_shlib.c Makefile
 	$(CC) -c $(PY_CORE_CFLAGS) \
 		-DSOABI='"$(SOABI)"' \
-		-o $@ $(srcdir)/Python/dynload_shlib.c
+		-o $@ $(srcdir)/Paradisi/dynload_shlib.c
 
-Python/dynload_hpux.o: $(srcdir)/Python/dynload_hpux.c Makefile
+Paradisi/dynload_hpux.o: $(srcdir)/Paradisi/dynload_hpux.c Makefile
 	$(CC) -c $(PY_CORE_CFLAGS) \
 		-DSHLIB_EXT='"$(EXT_SUFFIX)"' \
-		-o $@ $(srcdir)/Python/dynload_hpux.c
+		-o $@ $(srcdir)/Paradisi/dynload_hpux.c
 
-Python/sysmodule.o: $(srcdir)/Python/sysmodule.c Makefile
+Paradisi/sysmodule.o: $(srcdir)/Paradisi/sysmodule.c Makefile
 	$(CC) -c $(PY_CORE_CFLAGS) \
 		-DABIFLAGS='"$(ABIFLAGS)"' \
 		$(MULTIARCH_CPPFLAGS) \
-		-o $@ $(srcdir)/Python/sysmodule.c
+		-o $@ $(srcdir)/Paradisi/sysmodule.c
 
 $(IO_OBJS): $(IO_H)
 
@@ -802,14 +802,14 @@ $(PGEN): $(PGENOBJS)
 
 .PHONY: regen-grammar
 regen-grammar: $(PGEN)
-	# Regenerate Include/graminit.h and Python/graminit.c
+	# Regenerate Include/graminit.h and Paradisi/graminit.c
 	# from Grammar/Grammar using pgen
 	@$(MKDIR_P) Include
 	$(PGEN) $(srcdir)/Grammar/Grammar \
 		$(srcdir)/Include/graminit.h.new \
-		$(srcdir)/Python/graminit.c.new
+		$(srcdir)/Paradisi/graminit.c.new
 	$(UPDATE_FILE) $(srcdir)/Include/graminit.h $(srcdir)/Include/graminit.h.new
-	$(UPDATE_FILE) $(srcdir)/Python/graminit.c $(srcdir)/Python/graminit.c.new
+	$(UPDATE_FILE) $(srcdir)/Paradisi/graminit.c $(srcdir)/Paradisi/graminit.c.new
 
 Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
 				$(srcdir)/Include/token.h \
@@ -824,18 +824,18 @@ Parser/pgenmain.o:	$(srcdir)/Include/parsetok.h
 
 .PHONY=regen-ast
 regen-ast:
-	# Regenerate Include/Python-ast.h using Parser/asdl_c.py -h
+	# Regenerate Include/Paradisi-ast.h using Parser/asdl_c.py -h
 	$(MKDIR_P) $(srcdir)/Include
 	$(PYTHON_FOR_REGEN) $(srcdir)/Parser/asdl_c.py \
-		-h $(srcdir)/Include/Python-ast.h.new \
-		$(srcdir)/Parser/Python.asdl
-	$(UPDATE_FILE) $(srcdir)/Include/Python-ast.h $(srcdir)/Include/Python-ast.h.new
-	# Regenerate Python/Python-ast.c using Parser/asdl_c.py -c
-	$(MKDIR_P) $(srcdir)/Python
+		-h $(srcdir)/Include/Paradisi-ast.h.new \
+		$(srcdir)/Parser/Paradisi.asdl
+	$(UPDATE_FILE) $(srcdir)/Include/Paradisi-ast.h $(srcdir)/Include/Paradisi-ast.h.new
+	# Regenerate Paradisi/Paradisi-ast.c using Parser/asdl_c.py -c
+	$(MKDIR_P) $(srcdir)/Paradisi
 	$(PYTHON_FOR_REGEN) $(srcdir)/Parser/asdl_c.py \
-		-c $(srcdir)/Python/Python-ast.c.new \
-		$(srcdir)/Parser/Python.asdl
-	$(UPDATE_FILE) $(srcdir)/Python/Python-ast.c $(srcdir)/Python/Python-ast.c.new
+		-c $(srcdir)/Paradisi/Paradisi-ast.c.new \
+		$(srcdir)/Parser/Paradisi.asdl
+	$(UPDATE_FILE) $(srcdir)/Paradisi/Paradisi-ast.c $(srcdir)/Paradisi/Paradisi-ast.c.new
 
 .PHONY: regen-opcode
 regen-opcode:
@@ -846,13 +846,13 @@ regen-opcode:
 		$(srcdir)/Include/opcode.h.new
 	$(UPDATE_FILE) $(srcdir)/Include/opcode.h $(srcdir)/Include/opcode.h.new
 
-Python/compile.o Python/symtable.o Python/ast_unparse.o Python/ast.o: $(srcdir)/Include/graminit.h $(srcdir)/Include/Python-ast.h
+Paradisi/compile.o Paradisi/symtable.o Paradisi/ast_unparse.o Paradisi/ast.o: $(srcdir)/Include/graminit.h $(srcdir)/Include/Paradisi-ast.h
 
-Python/getplatform.o: $(srcdir)/Python/getplatform.c
-		$(CC) -c $(PY_CORE_CFLAGS) -DPLATFORM='"$(MACHDEP)"' -o $@ $(srcdir)/Python/getplatform.c
+Paradisi/getplatform.o: $(srcdir)/Paradisi/getplatform.c
+		$(CC) -c $(PY_CORE_CFLAGS) -DPLATFORM='"$(MACHDEP)"' -o $@ $(srcdir)/Paradisi/getplatform.c
 
-Python/importdl.o: $(srcdir)/Python/importdl.c
-		$(CC) -c $(PY_CORE_CFLAGS) -I$(DLINCLDIR) -o $@ $(srcdir)/Python/importdl.c
+Paradisi/importdl.o: $(srcdir)/Paradisi/importdl.c
+		$(CC) -c $(PY_CORE_CFLAGS) -I$(DLINCLDIR) -o $@ $(srcdir)/Paradisi/importdl.c
 
 Objects/unicodectype.o:	$(srcdir)/Objects/unicodectype.c \
 				$(srcdir)/Objects/unicodetype_db.h
@@ -898,15 +898,15 @@ Objects/setobject.o: $(srcdir)/Objects/stringlib/eq.h
 
 .PHONY: regen-opcode-targets
 regen-opcode-targets:
-	# Regenerate Python/opcode_targets.h from Lib/opcode.py
-	# using Python/makeopcodetargets.py
-	$(PYTHON_FOR_REGEN) $(srcdir)/Python/makeopcodetargets.py \
-		$(srcdir)/Python/opcode_targets.h.new
-	$(UPDATE_FILE) $(srcdir)/Python/opcode_targets.h $(srcdir)/Python/opcode_targets.h.new
+	# Regenerate Paradisi/opcode_targets.h from Lib/opcode.py
+	# using Paradisi/makeopcodetargets.py
+	$(PYTHON_FOR_REGEN) $(srcdir)/Paradisi/makeopcodetargets.py \
+		$(srcdir)/Paradisi/opcode_targets.h.new
+	$(UPDATE_FILE) $(srcdir)/Paradisi/opcode_targets.h $(srcdir)/Paradisi/opcode_targets.h.new
 
-Python/ceval.o: $(srcdir)/Python/opcode_targets.h $(srcdir)/Python/ceval_gil.h
+Paradisi/ceval.o: $(srcdir)/Paradisi/opcode_targets.h $(srcdir)/Paradisi/ceval_gil.h
 
-Python/frozen.o: $(srcdir)/Python/importlib.h $(srcdir)/Python/importlib_external.h
+Paradisi/frozen.o: $(srcdir)/Paradisi/importlib.h $(srcdir)/Paradisi/importlib_external.h
 
 # Generate DTrace probe macros, then rename them (PYTHON_ -> PyDTrace_) to
 # follow our naming conventions. dtrace(1) uses the output filename to generate
@@ -918,7 +918,7 @@ Include/pydtrace_probes.h: $(srcdir)/Include/pydtrace.d
 	sed 's/PYTHON_/PyDTrace_/' $@ > $@.tmp
 	mv $@.tmp $@
 
-Python/pydtrace.o: $(srcdir)/Include/pydtrace.d $(DTRACE_DEPS)
+Paradisi/pydtrace.o: $(srcdir)/Include/pydtrace.d $(DTRACE_DEPS)
 	$(DTRACE) $(DFLAGS) -o $@ -G -s $< $(DTRACE_DEPS)
 
 Objects/typeobject.o: Objects/typeslots.inc
@@ -936,7 +936,7 @@ regen-typeslots:
 # Header files
 
 PYTHON_HEADERS= \
-		$(srcdir)/Include/Python.h \
+		$(srcdir)/Include/Paradisi.h \
 		$(srcdir)/Include/abstract.h \
 		$(srcdir)/Include/accu.h \
 		$(srcdir)/Include/asdl.h \
@@ -1008,7 +1008,7 @@ PYTHON_HEADERS= \
 		$(srcdir)/Include/pystrcmp.h \
 		$(srcdir)/Include/pystrtod.h \
 		$(srcdir)/Include/pystrhex.h \
-		$(srcdir)/Include/pythonrun.h \
+		$(srcdir)/Include/paradisirun.h \
 		$(srcdir)/Include/pythread.h \
 		$(srcdir)/Include/pytime.h \
 		$(srcdir)/Include/rangeobject.h \
@@ -1026,7 +1026,7 @@ PYTHON_HEADERS= \
 		$(srcdir)/Include/weakrefobject.h \
 		pyconfig.h \
 		$(PARSER_HEADERS) \
-		$(srcdir)/Include/Python-ast.h \
+		$(srcdir)/Include/Paradisi-ast.h \
 		$(srcdir)/Include/internal/ceval.h \
 		$(srcdir)/Include/internal/gil.h \
 		$(srcdir)/Include/internal/mem.h \
@@ -1036,7 +1036,7 @@ PYTHON_HEADERS= \
 		$(srcdir)/Include/internal/warnings.h \
 		$(DTRACE_HEADERS)
 
-$(LIBRARY_OBJS) $(MODOBJS) Programs/python.o: $(PYTHON_HEADERS)
+$(LIBRARY_OBJS) $(MODOBJS) Programs/paradisi.o: $(PYTHON_HEADERS)
 
 
 ######################################################################
@@ -1046,7 +1046,7 @@ TESTPYTHON=	$(RUNSHARED) ./$(BUILDPYTHON) $(TESTPYTHONOPTS)
 TESTRUNNER=	$(TESTPYTHON) $(srcdir)/Tools/scripts/run_tests.py
 TESTTIMEOUT=	1200
 
-.PHONY: test testall testuniversal buildbottest pythoninfo
+.PHONY: test testall testuniversal buildbottest paradisiinfo
 
 # Run a basic set of regression tests.
 # This excludes some tests that are particularly resource-intensive.
@@ -1086,8 +1086,8 @@ buildbottest:	build_all platform
 		fi
 		$(TESTRUNNER) -j 1 -u all -W --slowest --fail-env-changed --timeout=$(TESTTIMEOUT) $(TESTOPTS)
 
-pythoninfo: build_all
-		$(RUNSHARED) ./$(BUILDPYTHON) -m test.pythoninfo
+paradisiinfo: build_all
+		$(RUNSHARED) ./$(BUILDPYTHON) -m test.paradisiinfo
 
 QUICKTESTOPTS=	$(TESTOPTS) -x test_subprocess test_io test_lib2to3 \
 		test_multibytecodec test_urllib2_localnet test_itertools \
@@ -1164,15 +1164,15 @@ altbininstall: $(BUILDPYTHON) @FRAMEWORKPYTHONW@
 		fi; \
 	done
 	if test "$(PYTHONFRAMEWORKDIR)" = "no-framework" ; then \
-		$(INSTALL_PROGRAM) $(BUILDPYTHON) $(DESTDIR)$(BINDIR)/python$(LDVERSION)$(EXE); \
+		$(INSTALL_PROGRAM) $(BUILDPYTHON) $(DESTDIR)$(BINDIR)/paradisi$(LDVERSION)$(EXE); \
 	else \
-		$(INSTALL_PROGRAM) $(STRIPFLAG) Mac/pythonw $(DESTDIR)$(BINDIR)/python$(LDVERSION)$(EXE); \
+		$(INSTALL_PROGRAM) $(STRIPFLAG) Mac/paradisiw $(DESTDIR)$(BINDIR)/paradisi$(LDVERSION)$(EXE); \
 	fi
 	-if test "$(VERSION)" != "$(LDVERSION)"; then \
-		if test -f $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE) -o -h $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE); \
-		then rm -f $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE); \
+		if test -f $(DESTDIR)$(BINDIR)/paradisi$(VERSION)$(EXE) -o -h $(DESTDIR)$(BINDIR)/paradisi$(VERSION)$(EXE); \
+		then rm -f $(DESTDIR)$(BINDIR)/paradisi$(VERSION)$(EXE); \
 		fi; \
-		(cd $(DESTDIR)$(BINDIR); $(LN) python$(LDVERSION)$(EXE) python$(VERSION)$(EXE)); \
+		(cd $(DESTDIR)$(BINDIR); $(LN) paradisi$(LDVERSION)$(EXE) paradisi$(VERSION)$(EXE)); \
 	fi
 	if test -f $(LDLIBRARY) && test "$(PYTHONFRAMEWORKDIR)" = "no-framework" ; then \
 		if test -n "$(DLLLIBRARY)" ; then \
@@ -1189,10 +1189,10 @@ altbininstall: $(BUILDPYTHON) @FRAMEWORKPYTHONW@
 	else	true; \
 	fi
 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
-		rm -f $(DESTDIR)$(BINDIR)python$(VERSION)-32$(EXE); \
+		rm -f $(DESTDIR)$(BINDIR)paradisi$(VERSION)-32$(EXE); \
 		lipo $(LIPO_32BIT_FLAGS) \
-			-output $(DESTDIR)$(BINDIR)/python$(VERSION)-32$(EXE) \
-			$(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE); \
+			-output $(DESTDIR)$(BINDIR)/paradisi$(VERSION)-32$(EXE) \
+			$(DESTDIR)$(BINDIR)/paradisi$(VERSION)$(EXE); \
 	fi
 
 bininstall: altbininstall
@@ -1200,21 +1200,21 @@ bininstall: altbininstall
 		echo "Creating directory $(LIBPC)"; \
 		$(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC); \
 	fi
-	-if test -f $(DESTDIR)$(BINDIR)/python3$(EXE) -o -h $(DESTDIR)$(BINDIR)/python3$(EXE); \
-	then rm -f $(DESTDIR)$(BINDIR)/python3$(EXE); \
+	-if test -f $(DESTDIR)$(BINDIR)/paradisi3$(EXE) -o -h $(DESTDIR)$(BINDIR)/paradisi3$(EXE); \
+	then rm -f $(DESTDIR)$(BINDIR)/paradisi3$(EXE); \
 	else true; \
 	fi
-	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) python3$(EXE))
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s paradisi$(VERSION)$(EXE) paradisi3$(EXE))
 	-if test "$(VERSION)" != "$(LDVERSION)"; then \
-		rm -f $(DESTDIR)$(BINDIR)/python$(VERSION)-config; \
-		(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(LDVERSION)-config python$(VERSION)-config); \
-		rm -f $(DESTDIR)$(LIBPC)/python-$(LDVERSION).pc; \
-		(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python-$(LDVERSION).pc); \
+		rm -f $(DESTDIR)$(BINDIR)/paradisi$(VERSION)-config; \
+		(cd $(DESTDIR)$(BINDIR); $(LN) -s paradisi$(LDVERSION)-config paradisi$(VERSION)-config); \
+		rm -f $(DESTDIR)$(LIBPC)/paradisi-$(LDVERSION).pc; \
+		(cd $(DESTDIR)$(LIBPC); $(LN) -s paradisi-$(VERSION).pc paradisi-$(LDVERSION).pc); \
 	fi
-	-rm -f $(DESTDIR)$(BINDIR)/python3-config
-	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-config python3-config)
-	-rm -f $(DESTDIR)$(LIBPC)/python3.pc
-	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python3.pc)
+	-rm -f $(DESTDIR)$(BINDIR)/paradisi3-config
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s paradisi$(VERSION)-config paradisi3-config)
+	-rm -f $(DESTDIR)$(LIBPC)/paradisi3.pc
+	(cd $(DESTDIR)$(LIBPC); $(LN) -s paradisi-$(VERSION).pc paradisi3.pc)
 	-rm -f $(DESTDIR)$(BINDIR)/idle3
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
 	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
@@ -1224,8 +1224,8 @@ bininstall: altbininstall
 	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
-		rm -f $(DESTDIR)$(BINDIR)/python3-32$(EXE); \
-		(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-32$(EXE) python3-32$(EXE)) \
+		rm -f $(DESTDIR)$(BINDIR)/paradisi3-32$(EXE); \
+		(cd $(DESTDIR)$(BINDIR); $(LN) -s paradisi$(VERSION)-32$(EXE) paradisi3-32$(EXE)) \
 	fi
 
 # Install the versioned manual page
@@ -1238,13 +1238,13 @@ altmaninstall:
 		else	true; \
 		fi; \
 	done
-	$(INSTALL_DATA) $(srcdir)/Misc/python.man \
-		$(DESTDIR)$(MANDIR)/man1/python$(VERSION).1
+	$(INSTALL_DATA) $(srcdir)/Misc/paradisi.man \
+		$(DESTDIR)$(MANDIR)/man1/paradisi$(VERSION).1
 
 # Install the unversioned manual page
 maninstall:	altmaninstall
-	-rm -f $(DESTDIR)$(MANDIR)/man1/python3.1
-	(cd $(DESTDIR)$(MANDIR)/man1; $(LN) -s python$(VERSION).1 python3.1)
+	-rm -f $(DESTDIR)$(MANDIR)/man1/paradisi3.1
+	(cd $(DESTDIR)$(MANDIR)/man1; $(LN) -s paradisi$(VERSION).1 paradisi3.1)
 
 # Install the library
 XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -1417,17 +1417,17 @@ libinstall:	build_all $(srcdir)/Modules/xxmodule.c
 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
 
-python-config: $(srcdir)/Misc/python-config.in Misc/python-config.sh
+paradisi-config: $(srcdir)/Misc/paradisi-config.in Misc/paradisi-config.sh
 	@ # Substitution happens here, as the completely-expanded BINDIR
 	@ # is not available in configure
-	sed -e "s,@EXENAME@,$(BINDIR)/python$(LDVERSION)$(EXE)," < $(srcdir)/Misc/python-config.in >python-config.py
+	sed -e "s,@EXENAME@,$(BINDIR)/paradisi$(LDVERSION)$(EXE)," < $(srcdir)/Misc/paradisi-config.in >paradisi-config.py
 	@ # Replace makefile compat. variable references with shell script compat. ones; $(VAR) -> ${VAR}
-	LC_ALL=C sed -e 's,\$$(\([A-Za-z0-9_]*\)),\$$\{\1\},g' < Misc/python-config.sh >python-config
-	@ # On Darwin, always use the python version of the script, the shell
+	LC_ALL=C sed -e 's,\$$(\([A-Za-z0-9_]*\)),\$$\{\1\},g' < Misc/paradisi-config.sh >paradisi-config
+	@ # On Darwin, always use the paradisi version of the script, the shell
 	@ # version doesn't use the compiler customizations that are provided
-	@ # in python (_osx_support.py).
+	@ # in paradisi (_osx_support.py).
 	@if test `uname -s` = Darwin; then \
-		cp python-config.py python-config; \
+		cp paradisi-config.py paradisi-config; \
 	fi
 
 
@@ -1456,7 +1456,7 @@ LIBPL=		@LIBPL@
 # pkgconfig directory
 LIBPC=		$(LIBDIR)/pkgconfig
 
-libainstall:	@DEF_MAKE_RULE@ python-config
+libainstall:	@DEF_MAKE_RULE@ paradisi-config
 	@for i in $(LIBDIR) $(LIBPL) $(LIBPC); \
 	do \
 		if test ! -d $(DESTDIR)$$i; then \
@@ -1477,22 +1477,22 @@ libainstall:	@DEF_MAKE_RULE@ python-config
 		fi; \
 	fi
 	$(INSTALL_DATA) Modules/config.c $(DESTDIR)$(LIBPL)/config.c
-	$(INSTALL_DATA) Programs/python.o $(DESTDIR)$(LIBPL)/python.o
+	$(INSTALL_DATA) Programs/paradisi.o $(DESTDIR)$(LIBPL)/paradisi.o
 	$(INSTALL_DATA) $(srcdir)/Modules/config.c.in $(DESTDIR)$(LIBPL)/config.c.in
 	$(INSTALL_DATA) Makefile $(DESTDIR)$(LIBPL)/Makefile
 	$(INSTALL_DATA) Modules/Setup $(DESTDIR)$(LIBPL)/Setup
 	$(INSTALL_DATA) Modules/Setup.local $(DESTDIR)$(LIBPL)/Setup.local
-	$(INSTALL_DATA) Misc/python.pc $(DESTDIR)$(LIBPC)/python-$(VERSION).pc
+	$(INSTALL_DATA) Misc/paradisi.pc $(DESTDIR)$(LIBPC)/paradisi-$(VERSION).pc
 	$(INSTALL_SCRIPT) $(srcdir)/Modules/makesetup $(DESTDIR)$(LIBPL)/makesetup
 	$(INSTALL_SCRIPT) $(srcdir)/install-sh $(DESTDIR)$(LIBPL)/install-sh
-	$(INSTALL_SCRIPT) python-config.py $(DESTDIR)$(LIBPL)/python-config.py
-	$(INSTALL_SCRIPT) python-config $(DESTDIR)$(BINDIR)/python$(LDVERSION)-config
-	@if [ -s Modules/python.exp -a \
+	$(INSTALL_SCRIPT) paradisi-config.py $(DESTDIR)$(LIBPL)/paradisi-config.py
+	$(INSTALL_SCRIPT) paradisi-config $(DESTDIR)$(BINDIR)/paradisi$(LDVERSION)-config
+	@if [ -s Modules/paradisi.exp -a \
 		"`echo $(MACHDEP) | sed 's/^\(...\).*/\1/'`" = "aix" ]; then \
 		echo; echo "Installing support files for building shared extension modules on AIX:"; \
-		$(INSTALL_DATA) Modules/python.exp		\
-				$(DESTDIR)$(LIBPL)/python.exp;		\
-		echo; echo "$(LIBPL)/python.exp";		\
+		$(INSTALL_DATA) Modules/paradisi.exp		\
+				$(DESTDIR)$(LIBPL)/paradisi.exp;		\
+		echo; echo "$(LIBPL)/paradisi.exp";		\
 		$(INSTALL_SCRIPT) $(srcdir)/Modules/makexp_aix	\
 				$(DESTDIR)$(LIBPL)/makexp_aix;		\
 		echo "$(LIBPL)/makexp_aix";			\
@@ -1515,12 +1515,12 @@ sharedinstall: sharedmods
 	-rm -r $(DESTDIR)$(DESTSHARED)/__pycache__
 
 # Here are a couple of targets for MacOSX again, to install a full
-# framework-based Python. frameworkinstall installs everything, the
+# framework-based Paradisi. frameworkinstall installs everything, the
 # subtargets install specific parts. Much of the actual work is offloaded to
 # the Makefile in Mac
 #
 #
-# This target is here for backward compatibility, previous versions of Python
+# This target is here for backward compatibility, previous versions of Paradisi
 # hadn't integrated framework installation in the normal install process.
 frameworkinstall: install
 
@@ -1545,8 +1545,8 @@ frameworkinstallstructure:	$(LDLIBRARY)
 		else	true; \
 		fi; \
 	done
-	$(LN) -fsn include/python$(LDVERSION) $(DESTDIR)$(prefix)/Headers
-	sed 's/%VERSION%/'"`$(RUNSHARED) ./$(BUILDPYTHON) -c 'import platform; print(platform.python_version())'`"'/g' < $(RESSRCDIR)/Info.plist > $(DESTDIR)$(prefix)/Resources/Info.plist
+	$(LN) -fsn include/paradisi$(LDVERSION) $(DESTDIR)$(prefix)/Headers
+	sed 's/%VERSION%/'"`$(RUNSHARED) ./$(BUILDPYTHON) -c 'import platform; print(platform.paradisi_version())'`"'/g' < $(RESSRCDIR)/Info.plist > $(DESTDIR)$(prefix)/Resources/Info.plist
 	$(LN) -fsn $(VERSION) $(DESTDIR)$(PYTHONFRAMEWORKINSTALLDIR)/Versions/Current
 	$(LN) -fsn Versions/Current/$(PYTHONFRAMEWORK) $(DESTDIR)$(PYTHONFRAMEWORKINSTALLDIR)/$(PYTHONFRAMEWORK)
 	$(LN) -fsn Versions/Current/Headers $(DESTDIR)$(PYTHONFRAMEWORKINSTALLDIR)/Headers
@@ -1555,14 +1555,14 @@ frameworkinstallstructure:	$(LDLIBRARY)
 
 # This installs Mac/Lib into the framework
 # Install a number of symlinks to keep software that expects a normal unix
-# install (which includes python-config) happy.
+# install (which includes paradisi-config) happy.
 frameworkinstallmaclib:
-	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libpython$(LDVERSION).a"
-	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libpython$(LDVERSION).dylib"
-	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libpython$(VERSION).a"
-	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libpython$(VERSION).dylib"
-	$(LN) -fs "../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(prefix)/lib/libpython$(LDVERSION).dylib"
-	$(LN) -fs "../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(prefix)/lib/libpython$(VERSION).dylib"
+	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libparadisi$(LDVERSION).a"
+	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libparadisi$(LDVERSION).dylib"
+	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libparadisi$(VERSION).a"
+	$(LN) -fs "../../../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(LIBPL)/libparadisi$(VERSION).dylib"
+	$(LN) -fs "../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(prefix)/lib/libparadisi$(LDVERSION).dylib"
+	$(LN) -fs "../$(PYTHONFRAMEWORK)" "$(DESTDIR)$(prefix)/lib/libparadisi$(VERSION).dylib"
 
 # This installs the IDE, the Launcher and other apps into /Applications
 frameworkinstallapps:
@@ -1571,10 +1571,10 @@ frameworkinstallapps:
 # Build the bootstrap executable that will spawn the interpreter inside
 # an app bundle within the framework.  This allows the interpreter to
 # run OS X GUI APIs.
-frameworkpythonw:
-	cd Mac && $(MAKE) pythonw
+frameworkparadisiw:
+	cd Mac && $(MAKE) paradisiw
 
-# This installs the python* and other bin symlinks in $prefix/bin or in
+# This installs the paradisi* and other bin symlinks in $prefix/bin or in
 # a bin directory relative to the framework root
 frameworkinstallunixtools:
 	cd Mac && $(MAKE) installunixtools DESTDIR="$(DESTDIR)"
@@ -1614,7 +1614,7 @@ config.status:	$(srcdir)/configure
 # with -O2 or higher and strict aliasing miscompiles the ratio() function
 # causing rounding issues. Compile dtoa.c using -fno-strict-aliasing on clang.
 # https://bugs.llvm.org//show_bug.cgi?id=31928
-Python/dtoa.o: Python/dtoa.c
+Paradisi/dtoa.o: Paradisi/dtoa.c
 	$(CC) -c $(PY_CORE_CFLAGS) $(CFLAGS_ALIASING) -o $@ $<
 
 # Run reindent on the library
@@ -1693,21 +1693,21 @@ clobber: clean profile-removal
 		config.cache config.log pyconfig.h Modules/config.c
 	-rm -rf build platform
 	-rm -rf $(PYTHONFRAMEWORKDIR)
-	-rm -f python-config.py python-config
+	-rm -f paradisi-config.py paradisi-config
 	-rm -f profile-gen-stamp profile-clean-stamp
 
 # Make things extra clean, before making a distribution:
 # remove all generated files, even Makefile[.pre]
-# Keep configure and Python-ast.[ch], it's possible they can't be generated
+# Keep configure and Paradisi-ast.[ch], it's possible they can't be generated
 distclean: clobber
 	for file in $(srcdir)/Lib/test/data/* ; do \
 	    if test "$$file" != "$(srcdir)/Lib/test/data/README"; then rm "$$file"; fi; \
 	done
 	-rm -f core Makefile Makefile.pre config.status \
 		Modules/Setup Modules/Setup.local \
-		Modules/ld_so_aix Modules/python.exp Misc/python.pc \
-		Misc/python-config.sh
-	-rm -f python*-gdb.py
+		Modules/ld_so_aix Modules/paradisi.exp Misc/paradisi.pc \
+		Misc/paradisi-config.sh
+	-rm -f paradisi*-gdb.py
 	# Issue #28258: set LC_ALL to avoid issues with Estonian locale.
 	# Expansion is performed here by shell (spawned by make) itself before
 	# arguments are passed to find. So LC_ALL=C must be set as a separate
@@ -1718,7 +1718,7 @@ distclean: clobber
 				     -o -name '*.bak' ')' \
 				     -exec rm -f {} ';'
 
-# Check that all symbols exported by libpython start with "Py" or "_Py"
+# Check that all symbols exported by libparadisi start with "Py" or "_Py"
 smelly: @DEF_MAKE_RULE@
 	$(RUNSHARED) ./$(BUILDPYTHON) Tools/scripts/smelly.py
 
@@ -1759,7 +1759,7 @@ patchcheck: @DEF_MAKE_RULE@
 
 # Dependencies
 
-Python/thread.o: @THREADHEADERS@
+Paradisi/thread.o: @THREADHEADERS@
 
 # Declare targets that aren't real files
 .PHONY: all build_all sharedmods check-clean-src oldsharedmods test quicktest

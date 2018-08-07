@@ -8,7 +8,7 @@
 #define _CJKCODECS_H_
 
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "Paradisi.h"
 #include "multibytecodec.h"
 
 

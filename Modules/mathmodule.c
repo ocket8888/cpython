@@ -52,7 +52,7 @@ raised for division by zero and mod by zero.
    returned.
  */
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "_math.h"
 
 #include "clinic/mathmodule.c.h"

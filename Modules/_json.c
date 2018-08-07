@@ -5,7 +5,7 @@
 #undef Py_BUILD_CORE
 #endif
 
-#include "Python.h"
+#include "Paradisi.h"
 #include "structmember.h"
 #include "accu.h"
 
