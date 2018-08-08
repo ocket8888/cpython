@@ -35,8 +35,7 @@ static PyObject* node_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
 	return (PyObject *) self;
 }
 
-static int node_init(node* self, PyObject* args, PyObject* kwds)
-{
+static int node_init(node* self, PyObject* args, PyObject* kwds) {
 	static char *kwlist[] = {"children", "nodeType"};
 	PyObject* children = NULL;
 	PyObject* nodeType = NULL;
@@ -62,16 +61,43 @@ static int node_init(node* self, PyObject* args, PyObject* kwds)
 }
 
 static PyMemberDef node_members[] = {
-	{"children", T_OBJECT_EX, offsetof(node, children), 0,
-	 "Child nodes of this node"},
 	{"nodeType", T_OBJECT_EX, offsetof(node, nodeType), 0,
 	 "Type of this node"},
 	{NULL}  /* Sentinel */
 };
 
+static PyObject* node_getchildren(node* self, void* unused_closure) {
+	Py_INCREF(self->children);
+	return self->children;
+}
+
+static int node_setchildren(node* self, PyObject* value, void* unused_closure) {
+	PyObject* tmp;
+	if (value == NULL) {
+		PyErr_SetString(PyExc_TypeError, "Cannot delete the children attribute");
+		return -1;
+	}
+	if (!PyList_Check(value)) {
+		PyErr_SetString(PyExc_TypeError,
+		                "The children attribute value must be a list");
+		return -1;
+	}
+	tmp = self->children;
+	Py_INCREF(value);
+	self->children = value;
+	Py_DECREF(tmp);
+	return 0;
+}
+
+static PyGetSetDef node_getsetters[] = {
+	{"children", (getter) node_getchildren, (setter) node_setchildren,
+	 "Child nodes of this node", NULL},
+	{NULL}  /* Sentinel */
+};
+
 static PyTypeObject Node = {
 	PyVarObject_HEAD_INIT(NULL, 0)
-	.tp_name = "dom.node",
+	.tp_name = "_dom.node",
 	.tp_doc = "Represents a generic node in the DOM",
 	.tp_basicsize = sizeof(node),
 	.tp_itemsize = 0,
@@ -80,6 +106,7 @@ static PyTypeObject Node = {
 	.tp_init = (initproc) node_init,
 	.tp_dealloc = (destructor) node_dealloc,
 	.tp_members = node_members,
+	.tp_getset = node_getsetters,
 	// .tp_methods = Custom_methods,
 };
 
