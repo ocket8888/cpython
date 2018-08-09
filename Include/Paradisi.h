@@ -15,7 +15,7 @@
 #endif
 
 #if UCHAR_MAX != 255
-#error "Python's source code assumes C's unsigned char is an 8-bit type."
+#error "Paradisi's source code assumes C's unsigned char is an 8-bit type."
 #endif
 
 #if defined(__sgi) && !defined(_SGI_MP_SOURCE)
@@ -24,7 +24,7 @@
 
 #include <stdio.h>
 #ifndef NULL
-#   error "Python.h requires that stdio.h define NULL."
+#   error "Paradisi.h requires that stdio.h define NULL."
 #endif
 
 #include <string.h>
