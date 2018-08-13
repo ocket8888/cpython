@@ -71,7 +71,7 @@ static int node_setchildren(node* self, PyObject* value, void* unused_closure) {
 		return -1;
 	}
 	if (!PyList_Check(value)) {
-		PyErr_Format(PyExc_TypeError, "'children' of a textNode must be a list, not %.200s", value->ob_type->tp_name);
+		PyErr_Format(PyExc_TypeError, "'children' of a node must be a list, not %.200s", value->ob_type->tp_name);
 		return -1;
 	}
 	tmp = self->children;
@@ -80,6 +80,7 @@ static int node_setchildren(node* self, PyObject* value, void* unused_closure) {
 	Py_DECREF(tmp);
 	return 0;
 }
+
 
 // Sets a node's attributes that have getters/setters.
 static PyGetSetDef node_getsetters[] = {
@@ -100,9 +101,26 @@ static PyTypeObject Node = {
 	.tp_init = (initproc) node_init,
 	.tp_dealloc = (destructor) node_dealloc,
 	.tp_getset = node_getsetters,
-	// .tp_methods = Custom_methods,
+//	.tp_methods = node_methods,
 };
 
+// W3C standard appendChild method - appends a child to this node, checking
+// first that the object to be added is actually a node
+static PyObject* node_appendChild(PyObject* self, PyObject* args) {
+	if (!PyObject_IsInstance(args, (PyObject*) &Node)) {
+		PyErr_Format(PyExc_TypeError, "child must be a node object, not %.200s", args->ob_type->tp_name);
+		return NULL;
+	}
+	Py_INCREF(args);
+	PyList_Append((PyObject*)(((node*)(self))->children), args);
+	Py_RETURN_NONE;
+}
+
+// Method definitions for a node object
+static PyMethodDef node_methods[] = {
+	{"appendChild", (PyCFunction) node_appendChild, METH_O, "Append a child node to this node's children"},
+	{NULL}
+};
 
 ////////////////////////////////////////////////
 ////            'textNode' CLASS            ////
@@ -258,7 +276,7 @@ static PyObject* elementNode_new(PyTypeObject* type, PyObject* args, PyObject* k
 
 // Initializes the tag name and attributes of an elementNode
 static int elementNode_init(elementNode* self, PyObject* args, PyObject* kwargs) {
-	static char* kwlist[] = {"tagName", "attributes"};
+	static char* kwlist[] = {"tagName", "attributes", NULL};
 	PyObject* tagName = NULL;
 	PyObject* attributes = NULL;
 	PyObject* tmp;
@@ -380,6 +398,7 @@ PyMODINIT_FUNC
 PyInit__dom(void)
 {
 	PyObject* m;
+	Node.tp_methods = node_methods;
 	if (PyType_Ready(&Node) < 0) {
 		return NULL;
 	}
