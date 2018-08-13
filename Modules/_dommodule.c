@@ -40,11 +40,11 @@ static PyObject* node_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
 
 // Initializer for a node with passed arguments; node.__init__
 static int node_init(node* self, PyObject* args, PyObject* kwds) {
-	static char* kwlist[] = {"children"};
+	static char* node_kwlist[] = {"children"};
 	PyObject* children = NULL;
 	PyListObject* tmp;
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist,
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O:node()", node_kwlist,
 									 &children))
 		return -1;
 
@@ -117,15 +117,13 @@ typedef struct {
 	PyUnicodeObject* data;
 } textNode;
 
-// Deallocates the memory dedicated to this textNode's
-// data, then calls its parent dealloc.
+// Deallocates the memory dedicated to this textNode's data.
 static void textNode_dealloc(textNode* self) {
 	Py_XDECREF(self->data);
 	Py_TYPE(self)->tp_free((PyObject*) self);
 }
 
-// Allocates a textNode's data and sets it to an empty string, then calls
-// its parent __new__.
+// Allocates a textNode's data and sets it to an empty string.
 static PyObject* textNode_new(PyTypeObject* type, PyObject* args, PyObject* kwargs) {
 	textNode* self;
 	self = (textNode*) type->tp_alloc(type, 0);
@@ -144,13 +142,13 @@ static PyObject* textNode_new(PyTypeObject* type, PyObject* args, PyObject* kwar
 	return (PyObject*) self;
 }
 
-// Initializes the data of
+// Initializes the data of a text node.
 static int textNode_init(textNode* self, PyObject* args, PyObject* kwargs) {
-	static char* kwlist[] = {"data"};
+	static char* textNode_kwlist[] = {"data"};
 	PyObject* data = NULL;
 	PyUnicodeObject* tmp;
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|0", kwlist, &data)) {
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|O:textNode()", textNode_kwlist, &data)) {
 		return -1;
 	}
 
@@ -163,11 +161,15 @@ static int textNode_init(textNode* self, PyObject* args, PyObject* kwargs) {
 	return 0;
 }
 
+// function to retrieve a reference to the node's data
 static PyUnicodeObject* textNode_getdata(textNode* self, void* unused_closure) {
 	Py_INCREF(self->data);
 	return self->data;
 }
 
+// Sets the node's data to the value provided. Does NOT perform string coercion
+// (instead raises TypeError), but WILL set the data to an empty string if
+// `del <textNode instance>.data` is attempted
 static int textNode_setdata(textNode* self, PyObject* value, void* unused_closure) {
 	PyUnicodeObject* tmp;
 	if (value == NULL) {
@@ -188,6 +190,7 @@ static int textNode_setdata(textNode* self, PyObject* value, void* unused_closur
 	return 0;
 }
 
+// Definition of the getters and setters for the node's attributes
 static PyGetSetDef textNode_getsetters[] = {
 	{"data", (getter) textNode_getdata, (setter) textNode_setdata, "The textual data contained in this node.", NULL},
 	{NULL} /* Sentinel */
@@ -205,6 +208,161 @@ static PyTypeObject TextNode = {
 	.tp_init = (initproc) textNode_init,
 	.tp_dealloc = (destructor) textNode_dealloc,
 	.tp_getset = textNode_getsetters
+};
+
+////////////////////////////////////////////////
+////          'elementNode' CLASS           ////
+////////////////////////////////////////////////
+
+// This structure inherits from `node`, with two
+// additional attributes: attributes - a `dict` of attributes and values
+//                        tagName   - the name of the tag, as a `str`
+typedef struct {
+	node node;
+	PyDictObject* attributes;
+	PyUnicodeObject* tagName;
+} elementNode;
+
+// Deallocates the memory dedicated to this node.
+static void elementNode_dealloc(elementNode* self) {
+	Py_XDECREF(self->attributes);
+	Py_XDECREF(self->tagName);
+	Py_TYPE(self)->tp_free((PyObject*) self);
+}
+
+// Allocates an elementNode's data and sets it's tag to an empty string
+// and its attributes to an empty dict.
+static PyObject* elementNode_new(PyTypeObject* type, PyObject* args, PyObject* kwargs) {
+	elementNode* self;
+	self = (elementNode*) type->tp_alloc(type, 0);
+	if (self != NULL) {
+		self -> tagName = (PyUnicodeObject*) PyUnicode_FromString("");
+		if (self->tagName == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+
+		self -> attributes = (PyDictObject*) PyDict_New();
+		if (self->attributes == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+
+		self -> node.children = (PyListObject*) PyList_New(0);
+		if (self->node.children == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+	}
+	return (PyObject*) self;
+}
+
+// Initializes the tag name and attributes of an elementNode
+static int elementNode_init(elementNode* self, PyObject* args, PyObject* kwargs) {
+	static char* kwlist[] = {"tagName", "attributes"};
+	PyObject* tagName = NULL;
+	PyObject* attributes = NULL;
+	PyObject* tmp;
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:elementNode()", kwlist, &tagName, &attributes)) {
+		return -1;
+	}
+
+	if (tagName) {
+		tmp = (PyObject*) self->tagName;
+		Py_INCREF(tagName);
+		self->tagName = (PyUnicodeObject*) tagName;
+		Py_XDECREF(tmp);
+	}
+
+	if (attributes) {
+		tmp = (PyObject*) self->attributes;
+		Py_INCREF(attributes);
+		self->attributes = (PyDictObject*) attributes;
+		Py_XDECREF(tmp);
+	}
+	return 0;
+}
+
+// function to retrieve a reference to the element's tagname
+static PyUnicodeObject* elementNode_gettagName(elementNode* self, void* unused_closure) {
+	Py_INCREF(self->tagName);
+	return self->tagName;
+}
+
+// Sets the node's tagname to the value provided. Does NOT perform string coercion
+// (instead raises TypeError), but WILL set the tagname to an empty string if
+// `del <elementNode instance>.tagName` is attempted
+static int elementNode_settagName(elementNode* self, PyObject* value, void* unused_closure) {
+	PyUnicodeObject* tmp;
+	if (value == NULL) {
+		// Rather than allow setting to None (or deletion), we set the text value to
+		// an empty string.
+		value = PyUnicode_FromString("");
+	}
+
+	else if (!PyUnicode_Check(value)) {
+		PyErr_Format(PyExc_TypeError, "'tagName' of an elementNode must be string, not %.200s", value->ob_type->tp_name);
+		return -1;
+	}
+
+	tmp = self-> tagName;
+	Py_INCREF(value);
+	self->tagName = (PyUnicodeObject*) value;
+	Py_DECREF(tmp);
+	return 0;
+}
+
+// function to retrieve a reference to the element's attributes
+static PyUnicodeObject* elementNode_getattrs(elementNode* self, void* unused_closure) {
+	Py_INCREF(self->attributes);
+	return self->attributes;
+}
+
+// Sets the node's attributes to the value provided. Does NOT perform dict coercion
+// (instead raises TypeError), but WILL set the tagname to an empty dict if
+// `del <elementNode instance>.attributes` is attempted
+static int elementNode_setattrs(elementNode* self, PyObject* value, void* unused_closure) {
+	PyDictObject* tmp;
+	if (value == NULL) {
+		// Rather than allowing deletion, we set the `attributes` value to
+		// an empty dict.
+		tmp = self->attributes;
+		self->attributes = PyDict_New();
+		Py_DECREF(tmp);
+		return 0;
+	}
+
+	if (!PyDict_Check(value)) {
+		PyErr_Format(PyExc_TypeError, "'attributes' of an elementNode must be a dictionary, not %.200s", value->ob_type->tp_name);
+		return -1;
+	}
+
+	tmp = self-> attributes;
+	Py_INCREF(value);
+	self->attributes = (PyDictObject*) value;
+	Py_DECREF(tmp);
+	return 0;
+}
+
+// Definition of the getters and setters for the node's attributes
+static PyGetSetDef elementNode_getsetters[] = {
+	{"tagName", (getter) elementNode_gettagName, (setter) elementNode_settagName, "The name of this element's tag.", NULL},
+	{"attributes", (getter) elementNode_getattrs, (setter) elementNode_setattrs, "A dictionary that maps the element's attributes to their values.", NULL},
+	{NULL} /* Sentinel */
+};
+
+static PyTypeObject ElementNode = {
+	PyVarObject_HEAD_INIT(NULL, 0)
+	.tp_name = "_dom.elementNode",
+	.tp_doc = "A node that represents an element of some kind.",
+	.tp_basicsize = sizeof(elementNode),
+	.tp_itemsize = 0,
+	.tp_flags = Py_TPFLAGS_BASETYPE | Py_TPFLAGS_DEFAULT,
+	.tp_new = elementNode_new,
+	.tp_init = (initproc) elementNode_init,
+	.tp_dealloc = (destructor) elementNode_dealloc,
+	.tp_getset = elementNode_getsetters
 };
 
 ////////////////////////////////////////////////
@@ -232,6 +390,11 @@ PyInit__dom(void)
 		return NULL;
 	}
 
+	ElementNode.tp_base = &Node;
+	if (PyType_Ready(&ElementNode) < 0) {
+		return NULL;
+	}
+
 	m = PyModule_Create(&_dommodule);
 	if (m == NULL)
 		return NULL;
@@ -240,5 +403,7 @@ PyInit__dom(void)
 	PyModule_AddObject(m, "node", (PyObject*) &Node);
 	Py_INCREF(&TextNode);
 	PyModule_AddObject(m, "textNode", (PyObject*) &TextNode);
+	Py_INCREF(&ElementNode);
+	PyModule_AddObject(m, "elementNode", (PyObject*) &ElementNode);
 	return m;
 }
