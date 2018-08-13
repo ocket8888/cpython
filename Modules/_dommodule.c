@@ -263,7 +263,7 @@ static int elementNode_init(elementNode* self, PyObject* args, PyObject* kwargs)
 	PyObject* attributes = NULL;
 	PyObject* tmp;
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:elementNode()", kwlist, &tagName, &attributes)) {
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|O!O!:elementNode()", kwlist, &PyUnicode_Type, &tagName, &PyDict_Type, &attributes)) {
 		return -1;
 	}
 
@@ -313,7 +313,7 @@ static int elementNode_settagName(elementNode* self, PyObject* value, void* unus
 }
 
 // function to retrieve a reference to the element's attributes
-static PyUnicodeObject* elementNode_getattrs(elementNode* self, void* unused_closure) {
+static PyDictObject* elementNode_getattrs(elementNode* self, void* unused_closure) {
 	Py_INCREF(self->attributes);
 	return self->attributes;
 }
@@ -327,7 +327,7 @@ static int elementNode_setattrs(elementNode* self, PyObject* value, void* unused
 		// Rather than allowing deletion, we set the `attributes` value to
 		// an empty dict.
 		tmp = self->attributes;
-		self->attributes = PyDict_New();
+		self->attributes = (PyDictObject*) PyDict_New();
 		Py_DECREF(tmp);
 		return 0;
 	}
