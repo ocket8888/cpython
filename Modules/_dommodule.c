@@ -40,12 +40,11 @@ static PyObject* node_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
 
 // Initializer for a node with passed arguments; node.__init__
 static int node_init(node* self, PyObject* args, PyObject* kwds) {
-	static char* kwlist[] = {"children"};
+	static char* kwlist[] = {"children", NULL};
 	PyObject* children = NULL;
 	PyListObject* tmp;
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist,
-									 &children))
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!", kwlist, &PyList_Type, &children))
 		return -1;
 
 	if (children) {
@@ -146,11 +145,11 @@ static PyObject* textNode_new(PyTypeObject* type, PyObject* args, PyObject* kwar
 
 // Initializes the data of
 static int textNode_init(textNode* self, PyObject* args, PyObject* kwargs) {
-	static char* kwlist[] = {"data"};
+	static char* kwlist[] = {"data", NULL};
 	PyObject* data = NULL;
 	PyUnicodeObject* tmp;
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|0", kwlist, &data)) {
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|O!:textNode", kwlist, &PyUnicode_Type, &data)) {
 		return -1;
 	}
 
