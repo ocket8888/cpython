@@ -18,9 +18,22 @@ typedef struct {
 	PyListObject* children;
 } node;
 
+// This will help support cyclic garbage collection by defining a way to traverse the child node list
+static int node_traverse(node* self, visitproc visit, void* arg) {
+	Py_VISIT(self->children);
+	return 0;
+}
+
+// Supports cyclic garbage collection via manual CLEAR on object destruction
+static int node_clear(node* self) {
+	Py_CLEAR(self->children);
+	return 0;
+}
+
 // This declares node.__del__
 static void node_dealloc(node* self) {
-	Py_XDECREF(self->children);
+	PyObject_GC_UnTrack(self);
+	node_clear(self);
 	Py_TYPE(self)->tp_free((PyObject*) self);
 }
 
@@ -96,10 +109,12 @@ static PyTypeObject Node = {
 	.tp_doc = "Represents a generic node in the DOM",
 	.tp_basicsize = sizeof(node),
 	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+	.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
 	.tp_new = node_new,
 	.tp_init = (initproc) node_init,
 	.tp_dealloc = (destructor) node_dealloc,
+	.tp_traverse = (traverseproc) node_traverse,
+	.tp_clear = (inquiry) node_clear,
 	.tp_getset = node_getsetters,
 //	.tp_methods = node_methods,
 };
