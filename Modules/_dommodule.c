@@ -5,6 +5,20 @@
 PyDoc_STRVAR(_dom_doc,
 "This module contains the Paradisi implementation of the DOM structure.");
 
+#define RAW_NODE 0 // This is non-standard; used for polymorphism
+#define ELEMENT_NODE 1
+#define ATTRIBUTE_NODE 2
+#define TEXT_NODE 3
+#define CDATA_SECTION_NODE 4
+// ENTITY_REFERENCE_NODE = 5; // historical, no need to implement
+// ENTITY_NODE = 6; // historical, no need to implement
+#define PROCESSING_INSTRUCTION_NODE 7
+#define COMMENT_NODE 8
+#define DOCUMENT_NODE 9
+#define DOCUMENT_TYPE_NODE 10
+#define DOCUMENT_FRAGMENT_NODE 11
+// NOTATION_NODE = 12; // historical, no need to implement
+
 
 ////////////////////////////////////////////////
 ////            'node' BASE CLASS           ////
@@ -16,6 +30,9 @@ PyDoc_STRVAR(_dom_doc,
 typedef struct {
 	PyObject_HEAD
 	PyListObject* children;
+	PyObject* weakrefs;
+	unsigned short nodeType;
+	PyUnicodeObject* nodeName;
 } node;
 
 // This will help support cyclic garbage collection by defining a way to traverse the child node list
@@ -34,6 +51,9 @@ static int node_clear(node* self) {
 static void node_dealloc(node* self) {
 	PyObject_GC_UnTrack(self);
 	node_clear(self);
+	if (self->weakrefs != NULL) {
+		PyObject_ClearWeakRefs((PyObject*) self);
+	}
 	Py_TYPE(self)->tp_free((PyObject*) self);
 }
 
@@ -44,6 +64,13 @@ static PyObject* node_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
 	if (self != NULL) {
 		self->children = (PyListObject*) PyList_New(0);
 		if (self->children == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+
+		self->nodeType = RAW_NODE
+		self->nodeName = (PyUnicodeObject*) PyUnicode_FromString("RAW_NODE");
+		if (self->nodeName == NULL) {
 			Py_DECREF(self);
 			return NULL;
 		}
@@ -116,7 +143,7 @@ static PyTypeObject Node = {
 	.tp_traverse = (traverseproc) node_traverse,
 	.tp_clear = (inquiry) node_clear,
 	.tp_getset = node_getsetters,
-//	.tp_methods = node_methods,
+	.tp_weaklistoffset = offsetof(node, weakrefs)
 };
 
 // W3C standard appendChild method - appends a child to this node, checking
@@ -136,6 +163,23 @@ static PyMethodDef node_methods[] = {
 	{"appendChild", (PyCFunction) node_appendChild, METH_O, "Append a child node to this node's children"},
 	{NULL}
 };
+
+// Readonly attributes that enumerates the type of the node
+static PyMemberDef node_members[] = {{
+	"nodeType",
+	T_USHORT,
+	offsetof(node, nodeType),
+	READONLY,
+	"The type of this node. (W3C-defined integer constant)"
+},
+{
+	"nodeName",
+	T_OBJECT,
+	offsetof(node, nodeName),
+	READONLY,
+	"The name of the type of this node."
+},
+{NULL}};
 
 ////////////////////////////////////////////////
 ////            'textNode' CLASS            ////
@@ -159,9 +203,15 @@ static void textNode_dealloc(textNode* self) {
 static PyObject* textNode_new(PyTypeObject* type, PyObject* args, PyObject* kwargs) {
 	textNode* self;
 	self = (textNode*) type->tp_alloc(type, 0);
+	self->node.nodeType = TEXT_NODE;
 	if (self != NULL) {
 		self -> data = (PyUnicodeObject*) PyUnicode_FromString("");
 		if (self->data == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+		self->node.nodeName = (PyUnicodeObject*) PyUnicode_FromString("#text");
+		if (self->node.nodeName == NULL) {
 			Py_DECREF(self);
 			return NULL;
 		}
@@ -228,6 +278,16 @@ static PyGetSetDef textNode_getsetters[] = {
 	{NULL} /* Sentinel */
 };
 
+// Renders the textNode as a string
+static PyUnicodeObject* textNode_str(textNode* self) {
+	return self->data;
+}
+
+// Representation of a textNode
+static PyUnicodeObject* textNode_repr(textNode* self) {
+	return (PyUnicodeObject*)(PyUnicode_Concat(PyUnicode_Concat(PyUnicode_FromString("#text: '"), (PyObject*)(self->data)), PyUnicode_FromString("'")));
+}
+
 // Full definition of a textNode
 static PyTypeObject TextNode = {
 	PyVarObject_HEAD_INIT(NULL, 0)
@@ -239,7 +299,10 @@ static PyTypeObject TextNode = {
 	.tp_new = textNode_new,
 	.tp_init = (initproc) textNode_init,
 	.tp_dealloc = (destructor) textNode_dealloc,
-	.tp_getset = textNode_getsetters
+	.tp_str = (reprfunc) textNode_str,
+	.tp_repr = (reprfunc) textNode_repr,
+	.tp_getset = textNode_getsetters,
+	.tp_members = node_members
 };
 
 ////////////////////////////////////////////////
@@ -268,8 +331,21 @@ static PyObject* elementNode_new(PyTypeObject* type, PyObject* args, PyObject* k
 	elementNode* self;
 	self = (elementNode*) type->tp_alloc(type, 0);
 	if (self != NULL) {
+		self->node.nodeType = ELEMENT_NODE;
+		self->node.nodeName = (PyUnicodeObject*) PyUnicode_FromString("");
+		if (self->node.nodeName == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+
 		self -> tagName = (PyUnicodeObject*) PyUnicode_FromString("");
 		if (self->tagName == NULL) {
+			Py_DECREF(self);
+			return NULL;
+		}
+
+		self->node.nodeName = (PyUnicodeObject*) PyUnicode_FromString("");
+		if (self->node.nodeName == NULL) {
 			Py_DECREF(self);
 			return NULL;
 		}
@@ -304,6 +380,10 @@ static int elementNode_init(elementNode* self, PyObject* args, PyObject* kwargs)
 		tmp = (PyObject*) self->tagName;
 		Py_INCREF(tagName);
 		self->tagName = (PyUnicodeObject*) tagName;
+		Py_XDECREF(tmp);
+		tmp = (PyObject*) self->node.nodeName;
+		Py_INCREF(tagName);
+		self->node.nodeName = (PyUnicodeObject*) tagName;
 		Py_XDECREF(tmp);
 	}
 
@@ -394,7 +474,8 @@ static PyTypeObject ElementNode = {
 	.tp_new = elementNode_new,
 	.tp_init = (initproc) elementNode_init,
 	.tp_dealloc = (destructor) elementNode_dealloc,
-	.tp_getset = elementNode_getsetters
+	.tp_getset = elementNode_getsetters,
+	.tp_members = node_members
 };
 
 ////////////////////////////////////////////////
@@ -431,6 +512,18 @@ PyInit__dom(void)
 	m = PyModule_Create(&_dommodule);
 	if (m == NULL)
 		return NULL;
+
+	// Constants
+	PyModule_AddIntConstant(m, "ELEMENT_NODE", ELEMENT_NODE);
+	PyModule_AddIntConstant(m, "ATTRIBUTE_NODE", ATTRIBUTE_NODE);
+	PyModule_AddIntConstant(m, "TEXT_NODE", TEXT_NODE);
+	PyModule_AddIntConstant(m, "CDATA_SECTION_NODE", CDATA_SECTION_NODE);
+	PyModule_AddIntConstant(m, "PROCESSING_INSTRUCTION_NODE", PROCESSING_INSTRUCTION_NODE);
+	PyModule_AddIntConstant(m, "COMMENT_NODE", COMMENT_NODE);
+	PyModule_AddIntConstant(m, "DOCUMENT_NODE", DOCUMENT_NODE);
+	PyModule_AddIntConstant(m, "DOCUMENT_TYPE_NODE", DOCUMENT_TYPE_NODE);
+	PyModule_AddIntConstant(m, "DOCUMENT_FRAGMENT_NODE", DOCUMENT_FRAGMENT_NODE);
+
 
 	Py_INCREF(&Node);
 	PyModule_AddObject(m, "node", (PyObject*) &Node);
